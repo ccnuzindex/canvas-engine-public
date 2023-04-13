@@ -7,10 +7,10 @@ interface DataService {}
 interface EventService {}
 
 let TYPES = {
-  Application: Symbol("Application"),
-  RenderService: Symbol("RenderService"),
-  EventService: Symbol("EventService"),
-  DataService: Symbol("DataService"),
+  Application: Symbol('Application'),
+  RenderService: Symbol('RenderService'),
+  EventService: Symbol('EventService'),
+  DataService: Symbol('DataService'),
 };
 
 export interface Options {
@@ -32,10 +32,14 @@ export interface BBox {
 }
 
 export interface ObjectOption {
-  position: Vector2D;
+  x: number;
+  y: number;
   fill: string;
   stroke?: string;
   strokeWidth?: number;
+  scaleX?: number;
+  scaleY?: number;
+  rotation?: number;
 }
 
 export default TYPES;

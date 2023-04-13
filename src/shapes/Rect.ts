@@ -1,5 +1,5 @@
-import { ObjectOption } from "../types";
-import CanvasObject from "./Object";
+import { ObjectOption } from '../types';
+import CanvasObject from './Object';
 
 export interface RectOption extends ObjectOption {
   width: number;
@@ -16,10 +16,10 @@ export default class Rect extends CanvasObject {
     this.height = option.height;
   }
 
-  public render(ctx: CanvasRenderingContext2D): void {
+  protected _render(ctx: CanvasRenderingContext2D): void {
     ctx.save();
     ctx.fillStyle = this.fill;
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    ctx.fillRect(0, 0, this.width, this.height);
     ctx.restore();
   }
 }

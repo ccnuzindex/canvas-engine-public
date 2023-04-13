@@ -1,6 +1,7 @@
-import { injectable } from "inversify";
-import CanvasObject from "../shapes/Object";
-import { Options } from "../types";
+import { injectable } from 'inversify';
+import CanvasObject from '../shapes/Object';
+import { Options } from '../types';
+import { Matrix2D } from '../utils/math2D';
 
 @injectable()
 class RenderService {
@@ -8,14 +9,15 @@ class RenderService {
   public objects: CanvasObject[] = [];
   public canvasWidth: number = 0;
   public canvasHeight: number = 0;
+  transform = new Matrix2D();
 
   constructor() {
-    this.canvasEle = document.createElement("canvas");
+    this.canvasEle = document.createElement('canvas');
   }
 
   public add(object: CanvasObject) {
     this.objects.push(object);
-    this.renderAll()
+    this.renderAll();
   }
 
   public init(options: Options) {
@@ -35,7 +37,7 @@ class RenderService {
     let y = 0;
 
     ctx.save();
-    ctx.strokeStyle = "gray";
+    ctx.strokeStyle = 'gray';
 
     while (y <= this.canvasWidth) {
       ctx.beginPath();
@@ -53,7 +55,7 @@ class RenderService {
     let x = 0;
 
     ctx.save();
-    ctx.strokeStyle = "gray";
+    ctx.strokeStyle = 'gray';
 
     while (x <= this.canvasHeight) {
       ctx.beginPath();
@@ -67,15 +69,19 @@ class RenderService {
   }
 
   private render() {
-    const ctx = this.canvasEle.getContext("2d");
+    const ctx = this.canvasEle.getContext('2d');
 
     if (ctx) {
+      ctx.save();
       ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+      const m = this.transform.m;
+      ctx.transform(m[0], m[1], m[2], m[3], m[4], m[5]);
       this.drawHorizontalGrid(ctx);
       this.drawVerticalGrid(ctx);
       this.objects.forEach((obj) => {
         obj.render(ctx);
       });
+      ctx.restore();
     }
   }
 

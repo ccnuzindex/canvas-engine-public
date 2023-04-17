@@ -27,8 +27,8 @@ const createCanvasApp = () => {
       x: 600,
       y: 600,
       fill: 'green',
-      width: 300,
-      height: 300,
+      width: 200,
+      height: 200,
     })
   );
 };

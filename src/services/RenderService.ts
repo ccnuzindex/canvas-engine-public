@@ -9,13 +9,14 @@ class RenderService {
   public objects: CanvasObject[] = [];
   public canvasWidth: number = 0;
   public canvasHeight: number = 0;
-  transform = new Matrix2D();
+  transform = new Matrix2D([0.5, 0, 0, 0.5, 0, 0]);
 
   constructor() {
     this.canvasEle = document.createElement('canvas');
   }
 
   public add(object: CanvasObject) {
+    object.renderService = this;
     this.objects.push(object);
     this.renderAll();
   }
@@ -68,6 +69,10 @@ class RenderService {
     ctx.restore();
   }
 
+  public getTransform() {
+    return this.transform;
+  }
+
   private render() {
     const ctx = this.canvasEle.getContext('2d');
 
@@ -78,6 +83,8 @@ class RenderService {
       ctx.transform(m[0], m[1], m[2], m[3], m[4], m[5]);
       this.drawHorizontalGrid(ctx);
       this.drawVerticalGrid(ctx);
+      ctx.restore();
+      ctx.save();
       this.objects.forEach((obj) => {
         obj.render(ctx);
       });

@@ -1,6 +1,7 @@
-import { injectable, inject } from "inversify";
-import TYPES from "../types";
-import RenderService from "./RenderService";
+import { injectable, inject } from 'inversify';
+import TYPES from '../types';
+import { Vector2D } from '../utils/math2D';
+import RenderService from './RenderService';
 
 @injectable()
 class EventService {
@@ -13,10 +14,15 @@ class EventService {
   }
 
   public init() {
-    console.log("event", this.renderService);
+    console.log('event', this.renderService);
     const ele = this.renderService.canvasEle;
-    ele.addEventListener("mousedown", (e) => {
-      console.log(e);
+    ele.addEventListener('mousedown', (e) => {
+      const boundingRect = this.renderService.canvasEle.getBoundingClientRect();
+      const point: Vector2D = {
+        x: e.clientX - boundingRect.x,
+        y: e.clientY - boundingRect.y,
+      };
+      // todo picking logic
     });
   }
 }

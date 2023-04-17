@@ -14,6 +14,14 @@ export class Matrix2D {
     this.m[5] = 0;
   }
 
+  point(point: Vector2D) {
+    var m = this.m;
+    return {
+      x: m[0] * point.x + m[2] * point.y + m[4],
+      y: m[1] * point.x + m[3] * point.y + m[5],
+    };
+  }
+
   translate(x: number, y: number) {
     this.m[4] += this.m[0] * x + this.m[2] * y;
     this.m[5] += this.m[1] * x + this.m[3] * y;
@@ -39,6 +47,25 @@ export class Matrix2D {
     this.m[1] *= sx;
     this.m[2] *= sy;
     this.m[3] *= sy;
+    return this;
+  }
+
+  multiply(matrix: Matrix2D) {
+    var m11 = this.m[0] * matrix.m[0] + this.m[2] * matrix.m[1];
+    var m12 = this.m[1] * matrix.m[0] + this.m[3] * matrix.m[1];
+
+    var m21 = this.m[0] * matrix.m[2] + this.m[2] * matrix.m[3];
+    var m22 = this.m[1] * matrix.m[2] + this.m[3] * matrix.m[3];
+
+    var dx = this.m[0] * matrix.m[4] + this.m[2] * matrix.m[5] + this.m[4];
+    var dy = this.m[1] * matrix.m[4] + this.m[3] * matrix.m[5] + this.m[5];
+
+    this.m[0] = m11;
+    this.m[1] = m12;
+    this.m[2] = m21;
+    this.m[3] = m22;
+    this.m[4] = dx;
+    this.m[5] = dy;
     return this;
   }
 }

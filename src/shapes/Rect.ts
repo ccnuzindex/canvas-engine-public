@@ -7,9 +7,6 @@ export interface RectOption extends ObjectOption {
 }
 
 export default class Rect extends CanvasObject {
-  public width: number;
-  public height: number;
-
   constructor(option: RectOption) {
     super(option);
     this.width = option.width;

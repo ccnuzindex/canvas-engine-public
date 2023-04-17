@@ -79,3 +79,59 @@ export class Vector2D {
     this.y = y;
   }
 }
+
+export interface Line {
+  start: Vector2D;
+  end: Vector2D;
+}
+
+const isPointIntersectWithLine = (point: Vector2D, line: Line) => {
+  // todo
+  // iLine = lines[lineKey];
+  // // optimisation 1: line below point. no cross
+  // if ((iLine.o.y < point.y) && (iLine.d.y < point.y)) {
+  //   continue;
+  // }
+  // // optimisation 2: line above point. no cross
+  // if ((iLine.o.y >= point.y) && (iLine.d.y >= point.y)) {
+  //   continue;
+  // }
+  // // optimisation 3: vertical line case
+  // if ((iLine.o.x === iLine.d.x) && (iLine.o.x >= point.x)) {
+  //   xi = iLine.o.x;
+  //   // yi = point.y;
+  // }
+  // // calculate the intersection point
+  // else {
+  //   b1 = 0;
+  //   b2 = (iLine.d.y - iLine.o.y) / (iLine.d.x - iLine.o.x);
+  //   a1 = point.y - b1 * point.x;
+  //   a2 = iLine.o.y - b2 * iLine.o.x;
+
+  //   xi = -(a1 - a2) / (b1 - b2);
+  //   // yi = a1 + b1 * xi;
+  // }
+  return true;
+};
+
+export const isPointInRect = (point: Vector2D, rect: Vector2D[]) => {
+  const lines: Line[] = [];
+  rect.forEach((item, idx) => {
+    if (idx < rect.length - 1) {
+      lines.push({
+        start: item,
+        end: rect[idx + 1],
+      });
+    }
+  });
+
+  let count = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const flag = isPointIntersectWithLine(point, lines[i]);
+    if (flag) {
+      count++;
+    }
+  }
+
+  return count % 2 === 0;
+};

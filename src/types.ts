@@ -11,6 +11,7 @@ let TYPES = {
   RenderService: Symbol('RenderService'),
   EventService: Symbol('EventService'),
   DataService: Symbol('DataService'),
+  HubService: Symbol('HubService'),
 };
 
 export interface Options {
@@ -43,3 +44,5 @@ export interface ObjectOption {
 }
 
 export default TYPES;
+
+export interface Disposable {}

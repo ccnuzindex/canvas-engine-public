@@ -39,6 +39,14 @@ export default class CanvasObject {
     return this.height;
   }
 
+  public setAttrs(attrs: Partial<ObjectOption>) {
+    let keys = Object.keys(attrs) as (keyof ObjectOption)[];
+
+    keys.forEach((k) => {
+      (this[k] as any) = attrs[k];
+    });
+  }
+
   public getAbsoluteTransform(): Matrix2D {
     let parentTransform: Matrix2D | undefined;
     let parentNode = this.parent;
@@ -93,7 +101,6 @@ export default class CanvasObject {
     ctx.transform(m[0], m[1], m[2], m[3], m[4], m[5]);
     this._render(ctx);
     this.updateBBox();
-    console.log(this.bbox);
     ctx.restore();
   }
 

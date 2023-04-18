@@ -14,7 +14,7 @@ const createCanvasApp = () => {
     new Rect({
       x: 100,
       y: 100,
-      fill: 'red',
+      fill: 'green',
       width: 300,
       height: 300,
       scaleX: 0.5,
@@ -31,6 +31,15 @@ const createCanvasApp = () => {
       height: 200,
     })
   );
+
+  app.hubService.on('mousedown', (evt) => {
+    console.log(evt);
+
+    evt.target.setAttrs({
+      fill: evt.target.fill === 'red' ? 'green' : 'red',
+    });
+    app.renderService.renderAll();
+  });
 };
 
 export default createCanvasApp;

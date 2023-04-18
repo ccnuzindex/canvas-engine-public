@@ -10,6 +10,7 @@ class RenderService {
   public canvasWidth: number = 0;
   public canvasHeight: number = 0;
   transform = new Matrix2D([0.5, 0, 0, 0.5, 0, 0]);
+  private rafId: number = 0;
 
   constructor() {
     this.canvasEle = document.createElement('canvas');
@@ -93,7 +94,12 @@ class RenderService {
   }
 
   public renderAll() {
-    requestAnimationFrame(() => {
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = 0;
+    }
+    this.rafId = requestAnimationFrame(() => {
+      this.rafId = 0;
       this.render();
     });
   }

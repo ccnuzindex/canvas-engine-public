@@ -86,32 +86,35 @@ export interface Line {
 }
 
 const isPointIntersectWithLine = (point: Vector2D, line: Line) => {
-  // todo
-  // iLine = lines[lineKey];
-  // // optimisation 1: line below point. no cross
-  // if ((iLine.o.y < point.y) && (iLine.d.y < point.y)) {
-  //   continue;
-  // }
-  // // optimisation 2: line above point. no cross
-  // if ((iLine.o.y >= point.y) && (iLine.d.y >= point.y)) {
-  //   continue;
-  // }
-  // // optimisation 3: vertical line case
-  // if ((iLine.o.x === iLine.d.x) && (iLine.o.x >= point.x)) {
-  //   xi = iLine.o.x;
-  //   // yi = point.y;
-  // }
-  // // calculate the intersection point
-  // else {
-  //   b1 = 0;
-  //   b2 = (iLine.d.y - iLine.o.y) / (iLine.d.x - iLine.o.x);
-  //   a1 = point.y - b1 * point.x;
-  //   a2 = iLine.o.y - b2 * iLine.o.x;
+  let xi: number;
+  // optimisation 1: line below point. no cross
+  if (line.start.y < point.y && line.end.y < point.y) {
+    return false;
+  }
 
-  //   xi = -(a1 - a2) / (b1 - b2);
-  //   // yi = a1 + b1 * xi;
-  // }
-  return true;
+  // optimisation 2: line above point. no cross
+  if (line.start.y >= point.y && line.end.y >= point.y) {
+    return false;
+  }
+
+  // optimisation 3: vertical line case
+  if (line.start.x === line.end.x && line.start.x >= point.x) {
+    xi = line.start.x;
+  } else {
+    let b1 = 0;
+    let b2 = (line.end.y - line.start.y) / (line.end.x - line.start.x);
+    let a1 = point.y - b1 * point.x;
+    let a2 = line.start.y - b2 * line.start.x;
+
+    xi = -(a1 - a2) / (b1 - b2);
+  }
+
+  // dont count xi < point.x cases
+  if (xi >= point.x) {
+    return true;
+  }
+
+  return false;
 };
 
 export const isPointInRect = (point: Vector2D, rect: Vector2D[]) => {
@@ -133,5 +136,5 @@ export const isPointInRect = (point: Vector2D, rect: Vector2D[]) => {
     }
   }
 
-  return count % 2 === 0;
+  return count !== 0 && count % 2 === 1;
 };

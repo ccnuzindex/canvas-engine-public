@@ -1,25 +1,34 @@
 import RenderService from '../services/RenderService';
 import { ObjectOption, Vector2D } from '../types';
+import EventEmitter from '../utils/eventEmitter';
 import { Matrix2D } from '../utils/math2D';
 
-export default class CanvasObject {
-  public fill: string;
+export default class CanvasObject extends EventEmitter {
+  public fill: string = '';
+  public stroke: string = '';
+  public strokeWidth: number = 0;
   public bbox: Vector2D[] = [];
   public width: number = 0;
   public height: number = 0;
-  public x: number;
-  public y: number;
+  public x: number = 0;
+  public y: number = 0;
   public scaleX = 1;
   public scaleY = 1;
   public rotation = 0;
-  transform = new Matrix2D();
+  public transform = new Matrix2D();
   public parent: CanvasObject | null = null;
   public renderService: RenderService | null = null;
+  public selectable = true;
+
+  private dirty = true;
 
   constructor(options: ObjectOption) {
-    this.x = options.x;
-    this.y = options.y;
-    this.fill = options.fill;
+    super();
+    this.x = options.x || 0;
+    this.y = options.y || 0;
+    if (options.fill) {
+      this.fill = options.fill;
+    }
     if (options.scaleX) {
       this.scaleX = options.scaleX;
     }
@@ -40,11 +49,13 @@ export default class CanvasObject {
   }
 
   public setAttrs(attrs: Partial<ObjectOption>) {
+    this.dirty = true;
     let keys = Object.keys(attrs) as (keyof ObjectOption)[];
 
     keys.forEach((k) => {
       (this[k] as any) = attrs[k];
     });
+    this.dirty = true;
   }
 
   public getAbsoluteTransform(): Matrix2D {
@@ -56,17 +67,23 @@ export default class CanvasObject {
       parentTransform = this.renderService?.getTransform();
     }
 
+    console.log(this, parentTransform, parentNode);
+
     if (parentTransform) {
       return new Matrix2D(parentTransform.m).multiply(this.transform);
     }
     return new Matrix2D(this.transform.m);
   }
 
-  private updateTransform() {
-    this.transform.reset();
-    this.transform.translate(this.x, this.y);
-    this.transform.rotate(this.rotation);
-    this.transform.scale(this.scaleX, this.scaleY);
+  public updateTransform() {
+    if (this.dirty) {
+      this.transform.reset();
+      this.transform.translate(this.x, this.y);
+      this.transform.rotate(this.rotation);
+      this.transform.scale(this.scaleX, this.scaleY);
+      this.updateBBox();
+      this.dirty = false;
+    }
   }
 
   public getAbsoluteBBox() {
@@ -100,17 +117,16 @@ export default class CanvasObject {
     const m = this.getAbsoluteTransform().m;
     ctx.transform(m[0], m[1], m[2], m[3], m[4], m[5]);
     this._render(ctx);
-    this.updateBBox();
     ctx.restore();
   }
 
-  public containsPoint() {}
-
-  public updateBBox() {
+  private updateBBox() {
     this.bbox = this.getAbsoluteBBox();
   }
 
-  public drawController() {}
-
   protected _render(ctx: CanvasRenderingContext2D): void {}
+
+  public isContainer() {
+    return false;
+  }
 }

@@ -32,7 +32,7 @@ class EventService {
     };
     let targetObj: CanvasObject | null = null;
     this.renderService.objects.forEach((obj) => {
-      if (isPointInRect(point, obj.bbox)) {
+      if (obj.selectable && isPointInRect(point, obj.bbox)) {
         targetObj = obj;
       }
     });

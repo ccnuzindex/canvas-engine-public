@@ -1,5 +1,7 @@
 import Application from './Application';
 import container from './inversify.config';
+import Circle from './shapes/Circle';
+import Container from './shapes/Container';
 import Rect from './shapes/Rect';
 import TYPES from './types';
 
@@ -22,15 +24,30 @@ const createCanvasApp = () => {
       rotation: Math.PI / 16,
     })
   );
-  app.renderService.add(
-    new Rect({
-      x: 600,
-      y: 600,
-      fill: 'green',
-      width: 200,
-      height: 200,
-    })
-  );
+
+  const layer = new Container({
+    x: 300,
+    y: 300,
+    children: [
+      new Rect({
+        x: 300,
+        y: 300,
+        fill: 'green',
+        width: 200,
+        height: 200,
+      }),
+      new Circle({
+        x: 100,
+        y: 100,
+        fill: 'green',
+        radius: 100,
+      }),
+    ],
+  });
+
+  app.renderService.add(layer);
+
+  app.renderService.renderAll();
 
   app.hubService.on('mousedown', (evt) => {
     console.log(evt);

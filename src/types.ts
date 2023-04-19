@@ -35,7 +35,7 @@ export interface BBox {
 export interface ObjectOption {
   x: number;
   y: number;
-  fill: string;
+  fill?: string;
   stroke?: string;
   strokeWidth?: number;
   scaleX?: number;

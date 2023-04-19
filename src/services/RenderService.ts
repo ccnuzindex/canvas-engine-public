@@ -19,7 +19,7 @@ class RenderService {
   public add(object: CanvasObject) {
     object.renderService = this;
     this.objects.push(object);
-    this.renderAll();
+    // this.renderAll();
   }
 
   public init(options: Options) {

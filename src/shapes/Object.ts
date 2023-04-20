@@ -58,21 +58,30 @@ export default class CanvasObject extends EventEmitter {
     this.dirty = true;
   }
 
-  public getAbsoluteTransform(): Matrix2D {
-    let parentTransform: Matrix2D | undefined;
-    let parentNode = this.parent;
-    if (parentNode) {
-      parentTransform = parentNode.getAbsoluteTransform();
-    } else {
-      parentTransform = this.renderService?.getTransform();
-    }
+  public getTransform() {
+    return this.transform;
+  }
 
-    console.log(this, parentTransform, parentNode);
-
-    if (parentTransform) {
-      return new Matrix2D(parentTransform.m).multiply(this.transform);
+  public getAbsoluteTransform(top?: CanvasObject | RenderService): Matrix2D {
+    let parentNode = this.parent || this.renderService;
+    let absTransform = new Matrix2D(this.transform.m);
+    while (parentNode !== null && parentNode !== top) {
+      absTransform = new Matrix2D(parentNode.getTransform().m).multiply(
+        absTransform
+      );
+      parentNode = (parentNode as CanvasObject).parent || this.renderService;
     }
-    return new Matrix2D(this.transform.m);
+    return absTransform;
+    // if (parentNode) {
+    //   parentTransform = parentNode.getAbsoluteTransform();
+    // } else {
+    //   parentTransform = this.renderService?.getTransform();
+    // }
+
+    // if (parentTransform) {
+    //   return new Matrix2D(parentTransform.m).multiply(this.transform);
+    // }
+    // return new Matrix2D(this.transform.m);
   }
 
   public updateTransform() {
@@ -126,7 +135,7 @@ export default class CanvasObject extends EventEmitter {
 
   protected _render(ctx: CanvasRenderingContext2D): void {}
 
-  public isContainer() {
+  public isGroup() {
     return false;
   }
 }

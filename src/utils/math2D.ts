@@ -68,6 +68,49 @@ export class Matrix2D {
     this.m[5] = dy;
     return this;
   }
+
+  decompose() {
+    var a = this.m[0];
+    var b = this.m[1];
+    var c = this.m[2];
+    var d = this.m[3];
+    var e = this.m[4];
+    var f = this.m[5];
+
+    var delta = a * d - b * c;
+
+    let result = {
+      x: e,
+      y: f,
+      rotation: 0,
+      scaleX: 0,
+      scaleY: 0,
+      skewX: 0,
+      skewY: 0,
+    };
+
+    // Apply the QR-like decomposition.
+    if (a != 0 || b != 0) {
+      var r = Math.sqrt(a * a + b * b);
+      result.rotation = b > 0 ? Math.acos(a / r) : -Math.acos(a / r);
+      result.scaleX = r;
+      result.scaleY = delta / r;
+      result.skewX = (a * c + b * d) / delta;
+      result.skewY = 0;
+    } else if (c != 0 || d != 0) {
+      var s = Math.sqrt(c * c + d * d);
+      result.rotation =
+        Math.PI / 2 - (d > 0 ? Math.acos(-c / s) : -Math.acos(c / s));
+      result.scaleX = delta / s;
+      result.scaleY = s;
+      result.skewX = 0;
+      result.skewY = (a * c + b * d) / delta;
+    } else {
+      // a = b = c = d = 0
+    }
+
+    return result;
+  }
 }
 
 export class Vector2D {

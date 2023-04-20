@@ -1,5 +1,6 @@
 import { injectable, inject } from 'inversify';
 import CanvasObject from '../shapes/Object';
+import Transformer from '../shapes/Transformer';
 import TYPES from '../types';
 import { isPointInRect, Vector2D } from '../utils/math2D';
 import HubService from './HubService';
@@ -42,6 +43,9 @@ class EventService {
         evt: e,
         type: 'mousedown',
       });
+      const tr = new Transformer();
+      this.renderService.add(tr);
+      tr.attach(targetObj);
     }
   };
 

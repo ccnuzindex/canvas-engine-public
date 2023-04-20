@@ -2,16 +2,16 @@ import { ObjectOption } from '../types';
 import { Matrix2D } from '../utils/math2D';
 import CanvasObject from './Object';
 
-export interface ContainerOptions extends ObjectOption {
+export interface GroupOptions extends ObjectOption {
   children: CanvasObject[];
 }
 
-export default class Container extends CanvasObject {
+export default class Group extends CanvasObject {
   public children: CanvasObject[];
   public selectable = false;
   public transform = new Matrix2D([1, 0, 0, 1, -20, -100]);
 
-  constructor(options: ContainerOptions) {
+  constructor(options: GroupOptions) {
     super(options);
     this.children = options.children;
     this.children.forEach((obj) => {
@@ -55,7 +55,7 @@ export default class Container extends CanvasObject {
     this.children.push(obj);
   }
 
-  public isContainer() {
+  public isGroup() {
     return true;
   }
 }

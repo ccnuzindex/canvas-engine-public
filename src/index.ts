@@ -1,7 +1,7 @@
 import Application from './Application';
 import container from './inversify.config';
 import Circle from './shapes/Circle';
-import Container from './shapes/Container';
+import Group from './shapes/Group';
 import Rect from './shapes/Rect';
 import TYPES from './types';
 
@@ -25,7 +25,7 @@ const createCanvasApp = () => {
     })
   );
 
-  const layer = new Container({
+  const layer = new Group({
     x: 300,
     y: 300,
     children: [

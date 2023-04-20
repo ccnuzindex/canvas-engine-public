@@ -65,27 +65,21 @@ export default class CanvasObject extends EventEmitter {
   public getAbsoluteTransform(top?: CanvasObject | RenderService): Matrix2D {
     let parentNode = this.parent || this.renderService;
     let absTransform = new Matrix2D(this.transform.m);
-    // while (parentNode) {
-    //   absTransform = new Matrix2D(parentNode.getTransform().m).multiply(
-    //     absTransform
-    //   );
-    //   if (parentNode !== this.renderService) {
-    //     parentNode = (parentNode as CanvasObject).parent;
-    //   } else {
-    //     parentNode = null;
-    //   }
-    // }
+    while (parentNode) {
+      console.log(!(top && parentNode === top));
+      if (!(top && parentNode === top)) {
+        absTransform = new Matrix2D(parentNode.getTransform().m).multiply(
+          absTransform
+        );
+        if (parentNode !== this.renderService) {
+          parentNode =
+            (parentNode as CanvasObject).parent || this.renderService;
+        } else {
+          parentNode = null;
+        }
+      }
+    }
     return absTransform;
-    // if (parentNode) {
-    //   parentTransform = parentNode.getAbsoluteTransform();
-    // } else {
-    //   parentTransform = this.renderService?.getTransform();
-    // }
-
-    // if (parentTransform) {
-    //   return new Matrix2D(parentTransform.m).multiply(this.transform);
-    // }
-    // return new Matrix2D(this.transform.m);
   }
 
   public updateTransform() {

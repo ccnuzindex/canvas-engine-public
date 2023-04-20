@@ -9,7 +9,7 @@ export interface GroupOptions extends ObjectOption {
 export default class Group extends CanvasObject {
   public children: CanvasObject[];
   public selectable = false;
-  public transform = new Matrix2D([1, 0, 0, 1, -20, -100]);
+  public transform = new Matrix2D([1, 0, 0, 1, 0, 0]);
 
   constructor(options: GroupOptions) {
     super(options);
@@ -17,6 +17,10 @@ export default class Group extends CanvasObject {
     this.children.forEach((obj) => {
       obj.parent = this;
     });
+  }
+
+  public getTransform() {
+    return this.transform;
   }
 
   public getAbsoluteBBox() {

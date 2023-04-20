@@ -12,18 +12,18 @@ const createCanvasApp = () => {
     width: 800,
     height: 800,
   });
-  app.renderService.add(
-    new Rect({
-      x: 100,
-      y: 100,
-      fill: 'green',
-      width: 300,
-      height: 300,
-      scaleX: 0.5,
-      scaleY: 0.5,
-      rotation: Math.PI / 16,
-    })
-  );
+  // app.renderService.add(
+  //   new Rect({
+  //     x: 100,
+  //     y: 100,
+  //     fill: 'green',
+  //     width: 300,
+  //     height: 300,
+  //     scaleX: 0.5,
+  //     scaleY: 0.5,
+  //     rotation: Math.PI / 16,
+  //   })
+  // );
 
   const layer = new Group({
     x: 300,
@@ -36,12 +36,12 @@ const createCanvasApp = () => {
         width: 200,
         height: 200,
       }),
-      new Circle({
-        x: 100,
-        y: 100,
-        fill: 'green',
-        radius: 100,
-      }),
+      // new Circle({
+      //   x: 100,
+      //   y: 100,
+      //   fill: 'green',
+      //   radius: 100,
+      // }),
     ],
   });
 

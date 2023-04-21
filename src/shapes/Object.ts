@@ -73,10 +73,12 @@ export default class CanvasObject extends EventEmitter {
           absTransform
         );
         if (parentNode instanceof RenderService) {
-          parentNode = null;
+          break;
         } else {
           parentNode = (parentNode as CanvasObject).parent;
         }
+      } else {
+        break;
       }
     }
     return absTransform;

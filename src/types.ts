@@ -41,6 +41,8 @@ export interface ObjectOption {
   scaleX?: number;
   scaleY?: number;
   rotation?: number;
+  width?: number;
+  height?: number;
 }
 
 export default TYPES;

@@ -17,7 +17,7 @@ class RenderService {
   }
 
   public add(object: CanvasObject) {
-    object.renderService = this;
+    object.parent = this;
     this.objects.push(object);
     // this.renderAll();
   }
@@ -102,6 +102,10 @@ class RenderService {
       this.rafId = 0;
       this.render();
     });
+  }
+
+  public isStage() {
+    return true;
   }
 }
 

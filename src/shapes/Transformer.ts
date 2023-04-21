@@ -1,3 +1,4 @@
+import RenderService from '../services/RenderService';
 import Group, { GroupOptions } from './Group';
 import CanvasObject from './Object';
 import Rect from './Rect';
@@ -43,8 +44,9 @@ export default class Transformer extends Group {
   }
 
   attach(obj: CanvasObject) {
-    if (this.renderService) {
-      const transform = this.getAbsoluteTransform(this.renderService);
+    if (this.parent) {
+      const transform = obj.getAbsoluteTransform(this.parent);
+      console.log(transform);
       const result = transform.decompose();
       this.setAttrs({
         ...result,

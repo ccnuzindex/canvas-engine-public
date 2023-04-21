@@ -46,6 +46,7 @@ class EventService {
       const tr = new Transformer();
       this.renderService.add(tr);
       tr.attach(targetObj);
+      this.renderService.renderAll();
     }
   };
 

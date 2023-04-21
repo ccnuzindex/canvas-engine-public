@@ -16,8 +16,7 @@ export default class CanvasObject extends EventEmitter {
   public scaleY = 1;
   public rotation = 0;
   public transform = new Matrix2D();
-  public parent: CanvasObject | null = null;
-  public renderService: RenderService | null = null;
+  public parent: CanvasObject | RenderService | null = null;
   public selectable = true;
 
   private dirty = true;
@@ -62,28 +61,26 @@ export default class CanvasObject extends EventEmitter {
     return this.transform;
   }
 
-  public getAbsoluteTransform(top?: CanvasObject | RenderService): Matrix2D {
-    let parentNode = this.parent || this.renderService;
+  public getAbsoluteTransform = (
+    top?: CanvasObject | RenderService
+  ): Matrix2D => {
+    let parentNode = this.parent;
     let absTransform = new Matrix2D(this.transform.m);
-    console.log('start');
 
     while (parentNode) {
-      console.log(parentNode);
       if (!(top && parentNode === top)) {
         absTransform = new Matrix2D(parentNode.getTransform().m).multiply(
           absTransform
         );
-        if (parentNode === this.renderService) {
+        if (parentNode instanceof RenderService) {
           parentNode = null;
         } else {
-          parentNode =
-            (parentNode as CanvasObject).parent || this.renderService;
+          parentNode = (parentNode as CanvasObject).parent;
         }
       }
     }
-    console.log('end');
     return absTransform;
-  }
+  };
 
   public updateTransform() {
     if (this.dirty) {

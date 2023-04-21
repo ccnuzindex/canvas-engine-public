@@ -16,6 +16,7 @@ export default class Group extends CanvasObject {
     this.children = options.children;
     this.children.forEach((obj) => {
       obj.parent = this;
+      obj.renderService = this.renderService;
     });
   }
 
